@@ -1,4 +1,0 @@
-- name: add ssh key for ansible
-  authorized_key:
-    user: ansible
-    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZ+UrlIIyWYk8jJqZ6xS190ePdk47ST8Gve0DwNUH1KHiTqfVYZUz5Z4RfpV9SlihArbVm41TjedH0j++a17Ws1AteuSPKmnojjyysf0b70UURSM0tA1hTvZ+tVP4Uw/OLDm2kN/pZTaMDRVcVrkpPsfl8ZNz3+1Lau/ku6SfBjGkQzVlcqwBJbZWbEcLVrdjSuWkWaZX4uRv6IE55gNvFcSR8hHSx4U+PGIKUSn/2PksRimMYU3nkcn+yQMym4V+XzJSDNtdPZwx7DPfi6SJGx3GLS0/IPVAmVjdYTIv8eOJigEbVp5gYh8jNGa7zGFbCwElYyij7W/nuOe+nDPors4rmM6E/3/qrLz2Bq3W3K40MoBKz4a8sa4mzOSvMeWig9O4C9wmmTLsPy5o5F4UZd5sm8EAvOkRSFar1DShWpdHgue7HrW0lb24M5zA5rGqBKCXhMd/wwv3GIEotQn7QlwmW3IqZsRO6IYDavKWY5cpWClDPxw54L9MS5bdpvzE= root@sd-consul01"

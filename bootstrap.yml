@@ -17,23 +17,3 @@
       update_cache: yes
     changed_when: false
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-- hosts: all
-  become: true
-  tasks:
-
-  - name: create ansible user
-    tags: always
-    user:
-      name: ansible
-      groups: root
-
-  - name: add sudoers file for ansible
-    tags: always
-    copy:
-      src: sudoer_ansible
-      dest: /etc/sudoers.d/ansible
-      owner: root
-      group: root
-      mode: 0440
-
