@@ -1,0 +1,35 @@
+- name: Install haproxy and keepalived
+  tags: install_haproxy, install_keepalived
+  package:
+    name:
+    - "{{ haproxy_package_name }}"
+    - "{{ keepalived_package_name }}"
+    state: present
+
+- name: Start and enabled haproxy
+  tags: install_haproxy
+  service:
+    name: "{{ haproxy_service_name }}"
+    state: started
+    enabled: yes
+    
+- name: Start and enabled keepalived
+  tags: install_keepalived
+  service:
+    name: "{{ keepalived_service_name }}"
+    state: started
+    enabled: yes
+
+- name: Configure HAProxy
+  tags: install_haproxy
+  template:
+    src: "{{ haproxy_conf_template }}"
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart_haproxy
+
+- name: Configure Keepalived
+  tags: install_keepalived
+  template:
+    src: "{{ keepalived_conf_template }}"
+    dest: /etc/keepalived/keepalived.conf
+  notify: restart_keepalived

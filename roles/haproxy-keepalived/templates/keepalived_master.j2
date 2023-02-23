@@ -1,0 +1,25 @@
+vrrp_script chk_haproxy {
+  script "killall -0 haproxy"
+  interval 2
+  weight 2
+}
+
+vrrp_instance haproxy-vip {
+  state MASTER
+  priority 100
+  interface {{ ansible_default_ipv4.interface }}                      # Network card
+  virtual_router_id 55
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass {{ keepalived_auth_pass }}
+  }
+
+  virtual_ipaddress {
+    {{ keepalived_vip }}                  # The VIP address
+  }
+
+  track_script {
+    chk_haproxy
+  }
+}

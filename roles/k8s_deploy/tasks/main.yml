@@ -1,0 +1,89 @@
+- name: modprobe overlay
+  tags: install_k8s_modprobe
+  community.general.modprobe:
+    name: overlay
+    state: present
+
+- name: modprobe br_netfilter
+  tags: install_k8s_modprobe
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Set system configurations for Kubernetes networking
+  tags: install_k8s
+  template:
+    src: "{{ kubernetes_cri_template }}"
+    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+  register: k8s_cri
+
+- name: Apply new settings
+  tags: install_k8s, update_system
+  command: sudo sysctl --system
+  when: k8s_cri.changed
+
+- name: Disable swap
+  tags: install_k8s, update_system
+  command: swapoff -a
+  changed_when: false
+
+- name: Install dependencies
+  tags: install_k8s, install_dependencies
+  package:
+    name:
+    - apt-transport-https
+    - curl
+
+- name: Add kubernetes vip hosts
+  tags: install_k8s
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ kubernetes_vip_address }}  kubernetes-vip"
+    state: present
+
+- name: Add apt-key
+  tags: install_k8s
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add kubernetes repo file
+  tags: install_k8s
+  apt_repository:
+    repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+    update_cache: true
+
+- name: Install kubernetes
+  tags: install_k8s
+  apt:
+    name:
+    - kubelet={{ k8s_version }}
+    - kubeadm={{ k8s_version }}
+    - kubectl={{ k8s_version }}
+    state: present
+  register: kubernetes_installed
+
+- name: Ensure kubelet is started and enabled at boot.
+  service:
+    name: kubelet
+    state: started
+    enabled: true
+
+- name: Hold kubeadm 
+  tags: install_k8s
+  dpkg_selections:
+    name: kubeadm
+    selection: install
+
+- name: Hold kubelet
+  tags: install_k8s
+  dpkg_selections:
+    name: kubelet
+    selection: install
+
+- name: Hold kubectl
+  tags: install_k8s
+  dpkg_selections:
+    name: kubectl
+    selection: install

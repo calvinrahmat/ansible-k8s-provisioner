@@ -1,0 +1,39 @@
+- hosts:
+    - "*"
+  become: true
+  roles:
+    - etc_hosts_update
+
+- hosts:
+    - load_balancers
+  become: true
+  roles:
+    - haproxy-keepalived
+
+- hosts:
+    - k8s_masters
+    - k8s_workers
+  become: true
+  roles:
+  # - containerd
+    - crio-container
+    - k8s_deploy
+
+- hosts:
+    - k8s_masters[0]
+  become: true
+  roles:
+    - ca_generator
+    - k8s_init
+
+- hosts:
+    - k8s_masters[1:]
+  roles:
+    - k8s_join_masters
+
+- hosts:
+    - k8s_workers
+  become: true
+  roles:
+    - k8s_join_workers
+

@@ -1,0 +1,44 @@
+- name: Install OpenSSL
+  tags: generate_ca
+  apt:
+    name: openssl
+    state: present
+
+- name: Create certificate directory if doesn't exist
+  tags: generate_ca
+  file:
+    path: "{{ ca_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Generate CA 
+  tags: generate_ca
+  shell: openssl req -newkey rsa:2048 -nodes -keyout {{ ca_name }}.key -out {{ ca_name }}.csr -subj "{{ subject }}" -x509 -sha256 -days 3650 -out $HOME/{{ ca_name }}.crt
+
+- name: Add CA certificate to the trusted certificate store
+  tags: generate_ca
+  copy:
+    remote_src: yes
+    src: "{{ ca_name }}.crt"
+    dest: "/usr/local/share/ca-certificates/{{ ca_name }}.crt"
+    mode: 0644
+  notify: update_trusted_certificates
+
+- name: Move CA certificate to remote server
+  tags: generate_ca
+  copy:
+    remote_src: yes
+    src: "{{ item }}"
+    dest: "{{ ca_dir }}"
+  with_items: 
+  - "$HOME/{{ ca_name }}.crt"
+  - "$HOME/{{ ca_name }}.key"
+
+- name: Clean up
+  tags: generate_ca
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+  - "$HOME/{{ ca_name }}.crt"
+  - "$HOME/{{ ca_name }}.key"  

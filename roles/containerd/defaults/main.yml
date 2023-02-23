@@ -1,0 +1,5 @@
+containerd_url: https://github.com/containerd/containerd/releases/download/v1.6.16/containerd-1.6.16-linux-amd64.tar.gz
+containerd_package_name: containerd
+containerd_service_name: containerd.service
+containerd_conf_template: containerd.j2
+containerd_conf_toml_template: containerd_config.j2

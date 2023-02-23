@@ -1,0 +1,10 @@
+- name: Update the /etc/hosts file with node name
+  tags: etchostsupdate
+  become: yes
+  blockinfile:
+    block: |
+      {% for item in ansible_play_hosts_all %}
+      {{ hostvars[item].ansible_all_ipv4_addresses[0] }} {{ hostvars[item].ansible_hostname }}
+      {% endfor %}
+    path : /etc/hosts
+

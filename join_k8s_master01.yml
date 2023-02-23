@@ -1,0 +1,18 @@
+- hosts:
+    - "*"
+  become: true
+  roles:
+    - etc_hosts_update
+
+- hosts:
+    - k8s_masters[3:]
+  become: true
+  roles:
+  # - containerd
+    - crio-container
+    - k8s_deploy
+
+- hosts:
+    - k8s_masters[3:]
+  roles:
+    - k8s_join_masters

@@ -1,0 +1,7 @@
+
+subject: "/CN=my-ca"
+ca_dir: "/etc/kubernetes/pki"
+ca_name: "apiserver-etcd-client"
+subject: "/C=ID/ST=Jakarta/L=Jakarta/O=Example/CN=kubernetes-vip"
+expiration_date: "2033-02-23 12:00:00"
+key_passphrase: "supersecretpassphrase"

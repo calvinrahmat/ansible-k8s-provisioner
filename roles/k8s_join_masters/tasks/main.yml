@@ -1,0 +1,10 @@
+- name: Copy join command to master nodes
+  tags: join_masters
+  copy:
+    src: /tmp/k8s_join_master_command
+    dest: /tmp/k8s_join_master_command
+    mode: 0777
+
+- name: Join the master nodes to the cluster
+  tags: join_masters
+  command: sh /tmp/k8s_join_master_command

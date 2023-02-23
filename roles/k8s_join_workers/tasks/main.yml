@@ -1,0 +1,10 @@
+- name: Copy join command to worker nodes
+  tags: join_workers
+  copy:
+    src: /tmp/k8s_join_worker_command
+    dest: /tmp/k8s_join_worker_command
+    mode: 0777
+
+- name: Join the worker nodes to the cluster
+  tags: join_workers
+  command: sh /tmp/k8s_join_worker_command

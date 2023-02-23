@@ -1,0 +1,10 @@
+kubernetes_pod_network:
+  ### Flannel CNI ####
+  # cni: 'flannel'
+  # cidr: 172.16.0.0/16
+  # url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+  ### Calico CNI ####
+  cni: 'calico'
+  cidr:  172.16.0.0/16
+  url: https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml

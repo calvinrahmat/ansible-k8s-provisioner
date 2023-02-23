@@ -1,0 +1,73 @@
+- name: Initialize the cluster
+  tags: init_k8s_only_once
+  shell: kubeadm init --pod-network-cidr={{ kubernetes_pod_network.cidr }} --control-plane-endpoint "kubernetes-vip:6443" --upload-certs
+  args:
+    chdir: $HOME
+    creates: cluster_initialized.txt
+  register: init_cluster
+
+- name: Debug init cluster
+  tags: init_k8s_only_once
+  debug:
+    msg: "{{ init_cluster.stdout }}"
+
+- name: Create .kube directory
+  tags: init_k8s
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: Copies admin.conf to user's kube config
+  tags: init_k8s
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    remote_src: yes
+
+- name: Install Pod Network
+  tags: init_k8s
+  shell: kubectl apply -f {{ kubernetes_pod_network.url }}
+  args:
+    chdir: $HOME
+
+- name: Get the token for joining worker nodes
+  tags: init_k8s, join_command_worker
+  shell: kubeadm token create  --print-join-command
+  register: k8s_join_worker_command
+
+- name: Debug join worker command
+  tags: init_k8s, join_command_worker
+  debug:
+    msg: "{{ k8s_join_worker_command.stdout }}"
+
+- name: Copy join worker command to local file.
+  tags: init_k8s, join_command_worker
+  delegate_to: localhost
+  copy: 
+    content: "{{ k8s_join_worker_command.stdout_lines[0] }}" 
+    dest: /tmp/k8s_join_worker_command
+    mode: 0777
+
+- name: Create new certifate to join master nodes
+  tags: init_k8s, join_command_master
+  command: kubeadm init phase upload-certs --upload-certs
+  register: k8s_master_cert
+  
+- name: Create join command for master
+  tags: init_k8s, join_command_master
+  command: kubeadm token create --certificate-key {{ k8s_master_cert.stdout_lines[2] }} --print-join-command
+  register: k8s_join_master_command
+
+- name: Debug join master command
+  tags: join_command_master
+  debug:
+    msg: "{{ k8s_join_master_command.stdout_lines[0] }}"
+
+- name: Copy join command for master to local file.
+  tags: init_k8s, join_command_master
+  delegate_to: localhost
+  copy:
+    content: "{{ k8s_join_master_command.stdout_lines[0] }}"
+    dest: /tmp/k8s_join_master_command
+    mode: 0777

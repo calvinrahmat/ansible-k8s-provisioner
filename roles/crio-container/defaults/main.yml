@@ -1,0 +1,6 @@
+---
+# defaults file for crio-container
+os_version: xUbuntu_20.04
+crio_version: 1.26
+crio_socket: /run/crio/crio.sock
+crio_config_dir: /etc/crio/
