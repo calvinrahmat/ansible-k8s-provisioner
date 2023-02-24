@@ -18,11 +18,15 @@ Provision high availability [Kubernetes](https://kubernetes.io) cluster on Linux
 ### 1. Register all your IP address or hostname that you want to be provisioned to become kubernetes cluster in invetory file `inventory`
 ### 2. Edit the variables in each role based on your environment
 ### 3. Update variable in each role please read the [Roles](#roles) Section
-### 4. *(optional)* Run the bootstrap.yml file. This file will update and upgrade packages of all your nodes
+### 4. Install the "community.general" collection from Ansible Galaxy.
+```
+ansible-galaxy collection install community.general      
+```
+### 5. *(optional)* Run the bootstrap.yml file. This file will update and upgrade packages of all your nodes
 ```
 ansible-playbook bootstrap.yml
 ```
-### 4. Run the install-k8s-ha.yml to deploy the high availability kubernetes cluster
+### 6. Run the install-k8s-ha.yml to deploy the high availability kubernetes cluster
 ```
 ansible-playbook install-k8s-ha.yml
 ```

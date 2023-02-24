@@ -9,8 +9,8 @@
   file:
     path: "{{ ca_dir }}"
     state: directory
-    mode: 0755
-
+    mode: "0755"
+    
 - name: Generate CA 
   tags: generate_ca
   shell: openssl req -newkey rsa:2048 -nodes -keyout {{ ca_name }}.key -out {{ ca_name }}.csr -subj "{{ subject }}" -x509 -sha256 -days 3650 -out $HOME/{{ ca_name }}.crt

@@ -1,0 +1,10 @@
+- name: Uninstall k8s in all hosts
+  hosts: k8s_masters, k8s_workers
+  tags: uninstall_k8s
+  tasks:
+  - name: unistll k8s
+    shell: |
+          kubeadm reset -y
+          sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube* -y
+          sudo apt-get autoremove -y
+          sudo rm -rf ~/.kube -y

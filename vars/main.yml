@@ -1,0 +1,32 @@
+#### ca generator ###
+
+ca_dir: "/etc/kubernetes/pki"
+ca_name: "ca"
+subject: "/C=ID/ST=Jakarta/L=Jakarta/O=Example/CN=kubernetes-vip"
+expiration_date: "2033-02-23 12:00:00"
+key_passphrase: "supersecretpassphrase"
+
+#### containerd ####
+containerd_url: https://github.com/containerd/containerd/releases/download/v1.6.16/containerd-1.6.16-linux-amd64.tar.gz 
+
+#### cri-o container ####
+os_version: xUbuntu_20.04
+crio_version: 1.26
+
+#### keealived_vip ####
+keepalived_vip: 192.168.1.100/24
+keepalived_auth_pass: nasgorenak
+
+#### kubernetes ####
+k8s_version: 1.26.1-00
+kubernetes_vip_address: 192.168.1.100
+kubernetes_pod_network:
+  ### Flannel CNI ####
+  # cni: 'flannel'
+  # cidr: 172.16.0.0/16
+  # url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+  ### Calico CNI ####
+  cni: 'calico'
+  cidr:  172.16.0.0/16
+  url: https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml

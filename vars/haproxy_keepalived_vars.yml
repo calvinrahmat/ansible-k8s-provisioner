@@ -1,3 +1,6 @@
+keepalived_vip: 192.168.1.100/24
+keepalived_auth_pass: nasgorenak
+
 haproxy_package_name: haproxy
 haproxy_service_name: haproxy.service
 haproxy_conf_template: haproxy.j2

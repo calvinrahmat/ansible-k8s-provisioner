@@ -1,0 +1,11 @@
+- name: Copy file
+  hosts: "*"
+  gather_facts: false
+  tasks:
+    - name: copy files
+      copy:
+        src: ./vars/main.yml
+        dest: /tmp/vars.yml
+
+    - debug:
+        var: ls_output.stdout_lines

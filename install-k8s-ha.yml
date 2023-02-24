@@ -1,11 +1,6 @@
 - hosts:
-    - "*"
-  become: true
-  roles:
-    - etc_hosts_update
-
-- hosts:
     - load_balancers
+  vars_files: ./vars/main.yml
   become: true
   roles:
     - haproxy-keepalived
@@ -13,6 +8,7 @@
 - hosts:
     - k8s_masters
     - k8s_workers
+  vars_files: ./vars/main.yml
   become: true
   roles:
   # - containerd
@@ -22,8 +18,8 @@
 - hosts:
     - k8s_masters[0]
   become: true
+  vars_files: ./vars/main.yml
   roles:
-    - ca_generator
     - k8s_init
 
 - hosts:

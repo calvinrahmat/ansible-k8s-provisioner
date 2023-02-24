@@ -18,7 +18,14 @@
   - echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ os_version }}/ /"|sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.list
   changed_when: false
 
-
+- name: install updates (Ubuntu)
+  tags: always
+  apt:
+    upgrade: dist
+    update_cache: yes
+  changed_when: false
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  
 - name: Install CRI-O
   tags: install_crio
   apt:
