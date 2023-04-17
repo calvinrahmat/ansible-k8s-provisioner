@@ -12,21 +12,21 @@ Provision high availability [Kubernetes](https://kubernetes.io) cluster on Linux
 ## Requirements
 - Internet Connection
 - Unreserved IP address for [Virtual IP Address (VIP)](https://en.wikipedia.org/wiki/Virtual_IP_address)
-- SSH connection for each node
+- SSH connection for target node
+- Root user for each target node
 
 ## Usage
 ### 1. Register all your IP address or hostname that you want to be provisioned to become kubernetes cluster in invetory file `inventory`
-### 2. Edit the variables in each role based on your environment
-### 3. Update variable in each role please read the [Roles](#roles) Section
-### 4. Install the "community.general" collection from Ansible Galaxy.
+### 2. Update variable in `vars/main.yml`
+### 3. Install the "community.general" collection from Ansible Galaxy.
 ```
 ansible-galaxy collection install community.general      
 ```
-### 5. *(optional)* Run the bootstrap.yml file. This file will update and upgrade packages of all your nodes
+### 4. *(optional)* Run the bootstrap.yml file. This file will update and upgrade packages of all your nodes and create ansible user.
 ```
 ansible-playbook bootstrap.yml
 ```
-### 6. Run the install-k8s-ha.yml to deploy the high availability kubernetes cluster
+### 5. Run the install-k8s-ha.yml to deploy the high availability kubernetes cluster
 ```
 ansible-playbook install-k8s-ha.yml
 ```
@@ -83,4 +83,3 @@ This role is add new worker node to your existing kubernetes cluster
 
 - https://blog.ajiarya.id/posts/kubernetes/cara-menyiapkan-high-availability-kubernetes-klaster-kubeadm/
 - https://docs.ansible.com/
-
